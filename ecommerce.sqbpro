@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/admin/ecommerce.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1125"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="customers" custom_title="0" dock_id="1" table="4,9:maincustomers"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011e00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE customers (
+    customer_id INTEGER PRIMARY KEY,
+    customer_name TEXT,
+    city TEXT
+);
+
+CREATE TABLE orders (
+    order_id INTEGER PRIMARY KEY,
+    customer_id INTEGER,
+    amount REAL,
+    order_date TEXT
+);
+
+INSERT INTO customers VALUES (1,'John','Mumbai');
+INSERT INTO customers VALUES (2,'Alice','Delhi');
+INSERT INTO customers VALUES (3,'Bob','Bangalore');
+INSERT INTO customers VALUES (4,'Emma','Chennai');
+INSERT INTO customers VALUES (5,'David','Pune');
+
+INSERT INTO orders VALUES (101,1,5000,'2026-01-10');
+INSERT INTO orders VALUES (102,2,2500,'2026-01-15');
+INSERT INTO orders VALUES (103,1,3000,'2026-02-01');
+INSERT INTO orders VALUES (104,3,4500,'2026-02-05');
+INSERT INTO orders VALUES (105,4,6000,'2026-02-10');
+INSERT INTO orders VALUES (106,2,1500,'2026-02-12');
+INSERT INTO orders VALUES (107,5,7000,'2026-03-01');
+INSERT INTO orders VALUES (108,3,3500,'2026-03-05');
+SELECT * FROM customers;
+SELECT * FROM orders
+WHERE amount &gt; 4000;
+SELECT * FROM orders
+ORDER BY amount DESC;
+SELECT customer_id,
+       SUM(amount) AS total_spent
+FROM orders
+GROUP BY customer_id;
+SELECT AVG(amount) AS average_order_value
+FROM orders;
+SELECT c.customer_name,
+       o.order_id,
+       o.amount
+FROM customers c
+INNER JOIN orders o
+ON c.customer_id = o.customer_id;
+SELECT customer_id,
+       amount
+FROM orders
+WHERE amount &gt;
+(
+    SELECT AVG(amount)
+    FROM orders
+	
+);
+CREATE VIEW customer_spending AS
+SELECT c.customer_name,
+       SUM(o.amount) AS total_spent
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+GROUP BY c.customer_name;
+SELECT * FROM customer_spending;
+CREATE INDEX idx_customer_id
+ON orders(customer_id);
+SELECT c.customer_name,
+       o.order_id,
+       o.amount
+FROM customers c
+LEFT JOIN orders o
+ON c.customer_id = o.customer_id;
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
